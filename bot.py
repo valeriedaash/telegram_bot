@@ -11,7 +11,8 @@ dp = Dispatcher()
 logging.basicConfig(
     level=logging.INFO, 
     filename = 'bot_log.log', 
-    format = "%(asctime)s - %(levelname)s - %(message)s")
+    format = "%(asctime)s - %(levelname)s - %(message)s"
+    )
 
 # Обработка команды start
 @dp.message(Command(commands=['start']))
