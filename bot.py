@@ -4,32 +4,7 @@ from aiogram import Bot, Dispatcher
 from aiogram.types import Message
 from aiogram.filters.command import Command
 
-# Инициализация объектов
-TOKEN = os.getenv('TOKEN') 
-bot = Bot(token=TOKEN)
-dp = Dispatcher()
-logging.basicConfig(
-    level=logging.INFO, 
-    filename = 'bot_log.log', 
-    format = "%(asctime)s - %(levelname)s - %(message)s"
-    )
-
-# Обработка команды start
-@dp.message(Command(commands=['start']))
-async def process_start(message: Message):
-    user_name = message.from_user.full_name
-    user_id = message.from_user.id
-    text = f'Привет, {user_name}!'
-    logging.info(f'{user_name} {user_id} запустил бота')
-    await bot.send_message(chat_id = user_id, text = text)
-
-# Обработка всех сообщений
-@dp.message()
-async def process_message(message: Message):
-    user_name = message.from_user.full_name
-    user_id = message.from_user.id
-    text = message.text
-    transliteration = {
+transliteration = {
         'А': 'A',
         'Б': 'B',
         'В': 'V',
@@ -62,8 +37,35 @@ async def process_message(message: Message):
         'Э': 'E',
         'Ю': 'IU',
         'Я': 'IA',
+        'Ь': '',
         ' ': ' '
     }
+# Инициализация объектов
+TOKEN = os.getenv('TOKEN') 
+bot = Bot(token=TOKEN)
+dp = Dispatcher()
+logging.basicConfig(
+    level=logging.INFO, 
+    filename = 'bot_log.log', 
+    format = "%(asctime)s - %(levelname)s - %(message)s"
+    )
+
+# Обработка команды start
+@dp.message(Command(commands=['start']))
+async def process_start(message: Message):
+    user_name = message.from_user.full_name
+    user_id = message.from_user.id
+    text = f'Привет, {user_name}!'
+    logging.info(f'{user_name} {user_id} запустил бота')
+    await bot.send_message(chat_id = user_id, text = text)
+
+# Обработка всех сообщений
+@dp.message()
+async def process_message(message: Message):
+    user_name = message.from_user.full_name
+    user_id = message.from_user.id
+    text = message.text
+    
     bot_answer = ''
     for i in text.upper():
         bot_answer += transliteration.get(i, i)
